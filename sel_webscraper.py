@@ -3,9 +3,18 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 import time
+import os
+from dotenv import load_dotenv #environment variables
+import platform
+
+
+ 
+
+
+
 
 def autologin(driver, url, username, password):
-
+   
     """
     Login at site with url, username and password passed.
     """
@@ -29,11 +38,16 @@ def run():
     '''
     Run script
     '''
-    DRIVER_PATH = './chromedriver'
-    URL = 'https://taller.gestioo.net/semper'
-    USER = 'user'
-    PASSWORD = 'password'
-    WAITING_TIME = 8
+    load_dotenv()
+    if(platform.system() == "Windows"):
+        DRIVER_PATH = './chromedriver.exe'
+        print('open chrome on windows')
+    elif(platform.system ==macOS):
+        DRIVER_PATH = './chromedriver'
+    URL = os.getenv('WORKSHOP')
+    USER = os.getenv('USER')
+    PASSWORD = os.getenv('PASSWORD')
+    WAITING_TIME = 15
     
     options = Options()
     options.headless = False
