@@ -7,13 +7,7 @@ Los requerimientos para correr el siguiente proyecto son:
 
 # Uso del script
 
-Se deben reemplazar los valores del usurio y contraseña por los indicados para hacer el login correcto al sitio.  
-
-`USER = 'user'` 
-Reemplazar _user_ por el nombre de usuario correcto.
-
-`PASSWORD = 'password'` 
-Reemplazar _password_ por el nombre de usuario correcto.
+Crear un archivo .env en la carpeta raíz del proyecto, con sus datos con el formato sugerido en ".env.example"
 
 `WAITING_TIME = 8` 
 En caso de desear que la pagina se encuentre mas tiempo abierta modificar este valor en el script.
