@@ -41,8 +41,7 @@ def run():
     load_dotenv()
     if(platform.system() == "Windows"):
         DRIVER_PATH = './chromedriver.exe'
-        print('open chrome on windows')
-    elif(platform.system ==macOS):
+    elif(platform.system() == "macOS"):
         DRIVER_PATH = './chromedriver'
     URL = os.getenv('WORKSHOP')
     USER = os.getenv('USER')
