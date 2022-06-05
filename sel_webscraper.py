@@ -43,7 +43,7 @@ def run():
     load_dotenv()
     if(platform.system() == "Windows"):
         DRIVER_PATH = './drivers/chromedriver.exe'
-    elif(platform.system() == "macOS"):
+    elif(platform.system() == "Darwin"):
         DRIVER_PATH = './drivers/chromedriver'
     else:
         DRIVER_PATH = './drivers/chromedriverlinux'
