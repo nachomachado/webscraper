@@ -10,7 +10,7 @@ Los requerimientos para correr el siguiente proyecto son:
 Crear un archivo .env en la carpeta raíz del proyecto, con sus datos con el formato sugerido en ".env.example"
 
 `WAITING_TIME = 8` 
-En caso de desear que la pagina se encuentre mas tiempo abierta modificar este valor en el script.
+En caso de desear que la pagina se encuentre mas tiempo abierta modificar este valor en el archivo _.env_.
 
 Para ejecutar este script se debe ejectutar en la consola lo siguiente:
 `python3 sel_webscraper.py`.
