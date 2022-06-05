@@ -1,3 +1,4 @@
+from numpy import double
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -46,7 +47,7 @@ def run():
     URL = os.getenv('WORKSHOP')
     USER = os.getenv('USER')
     PASSWORD = os.getenv('PASSWORD')
-    WAITING_TIME = 8
+    WAITING_TIME = int(os.getenv('WAITING_TIME'))
     
     options = Options()
     options.headless = False
