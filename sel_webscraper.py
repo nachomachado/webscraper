@@ -10,11 +10,6 @@ import requests
 from bs4 import BeautifulSoup
 
 
- 
-
-
-
-
 def autologin(driver, url, username, password):
    
     """
@@ -61,7 +56,7 @@ def run():
     time.sleep(WAITING_TIME)
     driver.get('https://taller.gestioo.net/taller/ordenes/sucursal/259#28018')
     time.sleep(2)
-    
+
     """ aca iria el scrapping de las notas, logré que cambie de página pero el BeautifulSoup corre como si no tuviera sesión activa.
     es decir, como si le hace el request a una ventana de incognito, habria que ver como hacer para apuntar el beauti al navegador que esta 
     siendo automatizado. """
@@ -75,8 +70,6 @@ def run():
     #     file.write(str(soup))
     # time.sleep(2)
     driver.quit()
-
-
 
 if __name__ == '__main__':
     run()
