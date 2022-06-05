@@ -6,6 +6,8 @@ import time
 import os
 from dotenv import load_dotenv #environment variables
 import platform
+import requests
+from bs4 import BeautifulSoup
 
 
  
@@ -40,20 +42,38 @@ def run():
     '''
     load_dotenv()
     if(platform.system() == "Windows"):
-        DRIVER_PATH = './chromedriver.exe'
+        DRIVER_PATH = './drivers/chromedriver.exe'
     elif(platform.system() == "macOS"):
-        DRIVER_PATH = './chromedriver'
+        DRIVER_PATH = './drivers/chromedriver'
+    else:
+        DRIVER_PATH = './drivers/chromedriverlinux'
+
     URL = os.getenv('WORKSHOP')
     USER = os.getenv('USER')
     PASSWORD = os.getenv('PASSWORD')
-    WAITING_TIME = 15
+    WAITING_TIME = 8
     
     options = Options()
     options.headless = False
     options.add_argument("--window-size=1920,1200")
     driver = webdriver.Chrome(DRIVER_PATH) 
     driver = autologin(driver, URL, USER, PASSWORD)
-    time.sleep(WAITING_TIME) 
+    time.sleep(WAITING_TIME)
+    driver.get('https://taller.gestioo.net/taller/ordenes/sucursal/259#28018')
+    time.sleep(2)
+    
+    """ aca iria el scrapping de las notas, logré que cambie de página pero el BeautifulSoup corre como si no tuviera sesión activa.
+    es decir, como si le hace el request a una ventana de incognito, habria que ver como hacer para apuntar el beauti al navegador que esta 
+    siendo automatizado. """
+
+    # page = requests.get('https://taller.gestioo.net/taller/ordenes/sucursal/259#28018')
+    # soup = BeautifulSoup(page.content, 'html.parser')
+    # soup = soup.prettify()
+    
+    # time.sleep(2)
+    # with open("output1.html", "w") as file:
+    #     file.write(str(soup))
+    # time.sleep(2)
     driver.quit()
 
 
