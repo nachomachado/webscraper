@@ -57,10 +57,13 @@ def run():
     time.sleep(WAITING_TIME)
     driver.get('https://taller.gestioo.net/taller/ordenes/sucursal/259#28018')
     time.sleep(2)
+    with open('output.html', 'w') as file:
+        file.write(driver.page_source)
 
     """ aca iria el scrapping de las notas, logré que cambie de página pero el BeautifulSoup corre como si no tuviera sesión activa.
     es decir, como si le hace el request a una ventana de incognito, habria que ver como hacer para apuntar el beauti al navegador que esta 
     siendo automatizado. """
+
 
     # page = requests.get('https://taller.gestioo.net/taller/ordenes/sucursal/259#28018')
     # soup = BeautifulSoup(page.content, 'html.parser')
