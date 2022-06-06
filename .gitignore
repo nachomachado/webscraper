@@ -4,3 +4,5 @@ selenium_webscraper.ipynb
 output1.html
 .vscode
 .env.example
+.output.html
+__pycache__
