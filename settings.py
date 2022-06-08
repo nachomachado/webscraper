@@ -28,6 +28,7 @@ def get_settings():
     options = Options()
     options.headless = False
     options.add_argument("--window-size=1920,1200")
+    options.page_load_strategy = 'normal'
     driver = webdriver.Chrome(DRIVER_PATH) 
     
     return URL, USER, PASSWORD, int(WAITING_TIME), driver
