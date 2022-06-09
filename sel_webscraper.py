@@ -50,18 +50,21 @@ def run():
         except:
             try:
                 note = WebDriverWait(driver, timeout=timeout).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="modal_orden_sin_notas"]')))
-                note = driver.find_element_by_xpath('//*[@id="modal_orden_sin_notas"]').text
-                print(n,':',note)   
+                note = driver.find_element_by_xpath('//*[@id="modal_orden_sin_notas"]')
+                print(n,':',note.text)   
             except:
                 print('ERROR CON EL ELEMENTO NOTAS')
                 driver.close()
+        
+        notas[n] = note.text
+        pd.DataFrame(data=[notas[n]], index = [n]).to_csv('notas.csv', header=False, mode='a')
 
         close = WebDriverWait(driver, timeout=timeout).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="modal_busqueda_orden"]/div/div/div[1]/button')))
         close = driver.find_element_by_xpath('//*[@id="modal_busqueda_orden"]/div/div/div[1]/button')
         close.click()
 
-    output = pd.DataFrame(data = notas, columns=['OT', 'NOTAS TECNICAS'])
-    output.to_csv('notas.csv')
+    #output = pd.DataFrame(data = notas, columns=['OT', 'NOTAS TECNICAS'])
+    #output.to_csv('notas.csv')
     driver.quit()
 
 if __name__ == '__main__':
