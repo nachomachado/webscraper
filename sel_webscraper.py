@@ -7,6 +7,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import ot_functions as otf
 
 
 def run():
@@ -14,57 +15,23 @@ def run():
     Run script
     '''
     URL, USER, PASSWORD, WAITING_TIME, driver = get_settings()
-    driver = autologin(driver, URL, USER, PASSWORD)
-    time.sleep(WAITING_TIME)
-    
-    driver.get('https://taller.gestioo.net/taller/ordenes/sucursal/259#a_1')
-    
-    time.sleep(WAITING_TIME)
-
-    ot = pd.read_excel('ot.xlsx', header=1)
-
-    notas = {}
-
     timeout = 2.5
+    driver = autologin(driver, URL, USER, PASSWORD)
 
-    for n in ot['ORDEN N°']:
-        zoom = WebDriverWait(driver, timeout=timeout).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="appVue"]/div/div[1]/div/div/div[2]/div/button[2]/i')))
-        zoom = driver.find_element_by_xpath('//*[@id="appVue"]/div/div[1]/div/div/div[2]/div/button[2]/i')
-        zoom.click()
-        
-        box = WebDriverWait(driver, timeout=timeout).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="f_busqueda_orden_div"]/input[1]')))
-        box = driver.find_element_by_xpath('//*[@id="f_busqueda_orden_div"]/input[1]')
-        box.click()
-        box.send_keys(int(n))
-        box.send_keys(Keys.ENTER)
-        
-        tab = WebDriverWait(driver, timeout=timeout).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="modal_busqueda_orden"]/div/div/div[2]/div[4]/div/div/ul/li[2]/a')))
-        tab = driver.find_element_by_xpath('//*[@id="modal_busqueda_orden"]/div/div/div[2]/div[4]/div/div/ul/li[2]/a')
-        tab.click()
-        
-        try: 
-            time.sleep(0.5)
-            note = WebDriverWait(driver, timeout=timeout).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="modal_orden_tabla_notas"]')))
-            note = driver.find_element_by_xpath('//*[@id="modal_orden_tabla_notas"]')
-            print(n,':',note.text)
-        except:
-            try:
-                note = WebDriverWait(driver, timeout=timeout).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="modal_orden_sin_notas"]')))
-                note = driver.find_element_by_xpath('//*[@id="modal_orden_sin_notas"]')
-                print(n,':',note.text)   
-            except:
-                print('ERROR CON EL ELEMENTO NOTAS')
-                driver.close()
-        
-        notas[n] = note.text
-        pd.DataFrame(data=[notas[n]], index = [n]).to_csv('notas.csv', header=False, mode='a')
+    time.sleep(WAITING_TIME)   
+    otf.goto_home(driver)
+    time.sleep(WAITING_TIME)
 
-        close = WebDriverWait(driver, timeout=timeout).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="modal_busqueda_orden"]/div/div/div[1]/button')))
-        close = driver.find_element_by_xpath('//*[@id="modal_busqueda_orden"]/div/div/div[1]/button')
-        close.click()
+    ot = set(pd.read_excel('ot.xlsx', header=1)['ORDEN N°'])
+    saved = set(pd.read_csv('notas.csv', index_col=0).index)
 
-    #output = pd.DataFrame(data = notas, columns=['OT', 'NOTAS TECNICAS'])
-    #output.to_csv('notas.csv')
+    for n in ot-saved:
+
+        otf.show_ot(n, driver, timeout=timeout)    
+        notas= otf.get_notes(driver, timeout=timeout)
+        otf.close_ot(driver, timeout=timeout)
+        pd.DataFrame(data=[notas], index = [n]).to_csv('notas.csv', header=False, mode='a')
+
     driver.quit()
 
 if __name__ == '__main__':
