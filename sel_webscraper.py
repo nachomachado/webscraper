@@ -28,9 +28,10 @@ def run():
     for n in ot-saved:
 
         otf.show_ot(n, driver, timeout=timeout)    
+        pys = otf.get_pys(driver, timeout=timeout)
         notas= otf.get_notes(driver, timeout=timeout)
         otf.close_ot(driver, timeout=timeout)
-        pd.DataFrame(data=[notas], index = [n]).to_csv('notas.csv', header=False, mode='a')
+        pd.DataFrame(data=[[notas, pys]], index = [n]).to_csv('notas.csv', header=False, mode='a')
 
     driver.quit()
 

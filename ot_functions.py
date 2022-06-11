@@ -28,28 +28,41 @@ def close_ot(driver, timeout=5):
     return 
 
 def get_notes(driver, timeout=5):
-    tab = WebDriverWait(driver, timeout=timeout).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="modal_busqueda_orden"]/div/div/div[2]/div[4]/div/div/ul/li[2]/a')))
-    tab = driver.find_element_by_xpath('//*[@id="modal_busqueda_orden"]/div/div/div[2]/div[4]/div/div/ul/li[2]/a')
-    tab.click()
+    tab_notes = WebDriverWait(driver, timeout=timeout).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="modal_busqueda_orden"]/div/div/div[2]/div[4]/div/div/ul/li[2]/a')))
+    tab_notes = driver.find_element_by_xpath('//*[@id="modal_busqueda_orden"]/div/div/div[2]/div[4]/div/div/ul/li[2]/a')
+    tab_notes.click()
         
     try: 
-        time.sleep(0.5)
+        time.sleep(0.25)
         note = WebDriverWait(driver, timeout=timeout).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="modal_orden_tabla_notas"]')))
-        note = driver.find_element_by_xpath('//*[@id="modal_orden_tabla_notas"]')
+        note = driver.find_element_by_xpath('//*[@id="modal_orden_tabla_notas"]').text
     except:
         try:
             note = WebDriverWait(driver, timeout=timeout).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="modal_orden_sin_notas"]')))
-            note = driver.find_element_by_xpath('//*[@id="modal_orden_sin_notas"]')
+            note = driver.find_element_by_xpath('//*[@id="modal_orden_sin_notas"]').text
         except:
             print('ERROR CON EL ELEMENTO NOTAS')
             driver.close()
-        
-    return note.text
 
+    tab_pys = WebDriverWait(driver, timeout=timeout).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="modal_busqueda_orden"]/div/div/div[2]/div[4]/div/div/ul/li[1]/a')))
+    tab_pys = driver.find_element_by_xpath('//*[@id="modal_busqueda_orden"]/div/div/div[2]/div[4]/div/div/ul/li[1]/a')
+    tab_pys.click()
 
+    return note
 
-def get_pys():
-    return
+def get_pys(driver, timeout=5):
+    try: 
+        pys = WebDriverWait(driver, timeout=timeout).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="modal_orden_tabla_servicios_repuestos"]')))
+        pys = driver.find_element_by_xpath('//*[@id="modal_orden_tabla_servicios_repuestos"]')
+    except:
+        try:
+            pys = WebDriverWait(driver, timeout=timeout).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="modal_orden_sin_trabajo"]')))
+            pys = driver.find_element_by_xpath('//*[@id="modal_orden_sin_trabajo"]')
+        except:
+            print('ERROR CON LOS ELEMENTOS PRODUCTOS Y SERVICIOS')
+            driver.close()
+
+    return pys.text
 
 
 if __name__ == '__main__':
